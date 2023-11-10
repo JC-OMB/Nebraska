@@ -2,6 +2,8 @@ import tkinter as tk
 from tkinter import filedialog, messagebox
 import pandas as pd
 import sqlite3
+import matplotlib.pyplot as plt
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
 # Variables globales
 df = None  # DataFrame para almacenar los datos cargados
@@ -56,5 +58,39 @@ frame_procesamiento.pack(padx=10, pady=10)
 
 btn_procesar_datos = tk.Button(frame_procesamiento, text="Procesar Datos", command=procesar_datos)
 btn_procesar_datos.pack(side=tk.LEFT, padx=5, pady=5)
+
+
+def visualizar_datos():
+    try:
+        # Conectar a SQLite y obtener los datos
+        conn = sqlite3.connect('datos_temporales.db')
+        df = pd.read_sql_query("SELECT * FROM datos_procesados", conn)
+        conn.close()
+
+        # Asegurarse de que hay datos para visualizar
+        if df.empty:
+            messagebox.showwarning("Visualización", "No hay datos para visualizar.")
+            return
+
+        # Crear la figura y el canvas para Matplotlib
+        plt.figure(figsize=(6, 4))
+        # Aquí puedes añadir el código para generar el gráfico que necesites
+        plt.plot(df['surfWaterTempMean'])
+
+        # Mostrar el gráfico en Tkinter
+        fig = plt.gcf()  # Obtener la figura actual de Matplotlib
+        canvas = FigureCanvasTkAgg(fig, master=root)  # Crear un canvas de Tkinter
+        canvas_widget = canvas.get_tk_widget()
+        canvas_widget.pack()
+        canvas.draw()
+
+    except Exception as e:
+        messagebox.showerror("Error en la visualización", str(e))
+
+# ... (tu código de la GUI, como la creación de botones)
+
+# Botón para visualizar los datos
+btn_visualizar_datos = tk.Button(root, text="Visualizar Datos", command=visualizar_datos)
+btn_visualizar_datos.pack()
 
 root.mainloop()
