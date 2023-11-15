@@ -1,0 +1,5 @@
+database/__pycache__/db_manager.cpython-310.pyc
+data/__pycache__/data_loader.cpython-310.pyc
+data/__pycache__/data_exporter.cpython-310.pyc
+gui/__pycache__/data_visualization.cpython-310.pyc
+gui/__pycache__/main_window.cpython-310.pyc
