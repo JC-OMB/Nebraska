@@ -8,3 +8,7 @@ class DataExporter:
     def export_json(self, filepath, metadata):
         # Implementation for exporting metadata as JSON
         pass
+    
+    def export_json(self, filepath, metadata):
+        with open(filepath, 'w') as f:
+            json.dump(metadata, f)
