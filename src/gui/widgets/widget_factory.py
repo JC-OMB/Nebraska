@@ -5,7 +5,7 @@ from gui.widgets.frames import *
 
 class WidgetFactory:
     class Widgets(Enum):
-        MainNotebook = [HomeFrame, FilesFrame, VisualizationFrame, ExportFrame]
+        MainNotebook = [HomeFrame, FilesFrame, AnalysisFrame, VisualizationFrame, ExportFrame]
 
     @staticmethod
     def get_widgets(instance):

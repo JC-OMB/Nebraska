@@ -7,7 +7,14 @@ class VisualizationFrame(Frame):
     def __init__(self, master):
         super().__init__(master)
 
-        self.create_widgets()
+        self.db = master.db
 
-    def create_widgets(self):
+        self.add_widgets()
+
+        self.render()
+
+    def add_widgets(self):
+        pass
+
+    def render(self):
         pass

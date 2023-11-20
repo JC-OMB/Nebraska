@@ -7,7 +7,12 @@ class ExportFrame(Frame):
     def __init__(self, master):
         super().__init__(master)
 
-        self.create_widgets()
+        self.add_widgets()
 
-    def create_widgets(self):
+        self.render()
+
+    def add_widgets(self):
+        pass
+
+    def render(self):
         pass

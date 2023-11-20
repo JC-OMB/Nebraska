@@ -1,3 +1,4 @@
+from .analysis_frame import *
 from .export_frame import *
 from .files_frame import *
 from .home_frame import *
