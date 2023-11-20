@@ -1,10 +1,15 @@
-import tkinter as tk
-from gui.main_window import MainWindow
+# * System Imports
+import sys
+
+sys.path.append('src')
+
+# * Project Imports
+from app import App
+
 
 def main():
-    root = tk.Tk()
-    app = MainWindow(root)
-    root.mainloop()
+    App().run()
+
 
 if __name__ == "__main__":
     main()
