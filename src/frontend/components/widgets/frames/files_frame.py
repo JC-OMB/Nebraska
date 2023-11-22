@@ -1,23 +1,24 @@
 from pathlib import Path
 from tkinter import filedialog, Frame, Button, BooleanVar, Checkbutton, messagebox
 
+from frontend.components.widgets.frames import AnalysisFrame
+
 
 class FilesFrame(Frame):
     label = "Data Loading"
 
     def __init__(self, master):
         super().__init__(master)
-        # Set up data
-        self.db = master.db
-        self.data_adapter = master.data_adapter
+        # Set up api
+        self.api = master.api
         # Create widgets
         self.add_widgets()
         # Initial Render
         self.render()
 
     def add_widgets(self):
-        self.paths_list = Frame(self)
-        self.paths_list.pack(anchor='n', fill='x')
+        self.list = Frame(self)
+        self.list.pack(anchor='n', fill='x')
 
         self.add_button = Button(self, text="Add CSV(s)", command=self.add_rows)
         self.add_button.pack(anchor='center')
@@ -26,10 +27,10 @@ class FilesFrame(Frame):
         self.load_button.pack(anchor='s')
 
     def add_row(self, path):
-        row_frame = Frame(self.paths_list)
+        row_frame = Frame(self.list)
 
         label = path.stem
-        selection = BooleanVar(value=path in self.db.csv_selected)
+        selection = BooleanVar(value=path in self.api.csv.selected)
         command = lambda: self.select_row(path, selection)
         checkbox = Checkbutton(row_frame, text=label, var=selection, command=command)
         checkbox.pack(side='left')
@@ -45,29 +46,27 @@ class FilesFrame(Frame):
         # Convert paths to Path objects
         paths = [Path(path) for path in paths]
         # Add CSV paths to database
-        self.db.add_csvs(paths)
+        self.api.csv.add_all(paths)
         # Render rows
         self.render_rows()
 
     def load_rows(self):
-        if self.db.csv_selected:
-            self.data_adapter.load_csvs()
+        if self.api.csv.selected:
+            self.api.data.load_csvs(self.api.csv)
             messagebox.showinfo("Load CSV", "Files loaded successfully")
             self.navigate()
         else:
-            messagebox.showerror(title="Error", message="Error: No files csv_selected")
-        # TODO: Add loading indicator
-        # TODO: Add success indicator
+            messagebox.showerror(title="Error", message="Error: No files selected")
 
     def navigate(self):
         # TODO - Clean
-        analysis_frame = self.master.winfo_children()[2]
+        analysis_frame: AnalysisFrame = self.master.winfo_children()[2]
         analysis_frame.update_combobox()
         # Navigate to analysis frame
         self.master.select(analysis_frame)
 
     def remove_row(self, path):
-        self.db.remove_csv(path)
+        self.api.csv.remove(path)
         self.render_rows()
 
     def render(self):
@@ -77,24 +76,24 @@ class FilesFrame(Frame):
 
     def render_add_button(self):
         self.add_button.pack_forget()
-        if len(self.db.csv_sources) < 4:
+        if len(self.api.csv.sources) < 4:
             self.add_button.pack(anchor='center')
 
     def render_load_button(self):
         self.load_button.pack_forget()
-        if len(self.db.csv_selected) > 0:
+        if len(self.api.csv.selected) > 0:
             self.load_button.pack(anchor='s')
 
     def render_paths_list(self):
-        self.paths_list.pack_forget()
-        if self.db.csv_sources:
-            self.paths_list.pack(anchor='n', fill='x')
+        self.list.pack_forget()
+        if self.api.csv.sources:
+            self.list.pack(anchor='n', fill='x')
 
     def render_rows(self):
         # Destroy Rows
-        [row.destroy() for row in self.paths_list.winfo_children()]
+        [row.destroy() for row in self.list.winfo_children()]
         # Render Rows
-        for path in self.db.csv_sources:
+        for path in self.api.csv.sources:
             self.add_row(path)
         # Toggle Buttons
         self.render()
@@ -102,7 +101,7 @@ class FilesFrame(Frame):
     def select_row(self, path, selection):
         is_selected = selection.get()
         if is_selected:
-            self.db.csv_selected.add(path)
+            self.api.csv.selected.add(path)
         else:
-            self.db.csv_selected.discard(path)
+            self.api.csv.selected.discard(path)
         self.render_rows()

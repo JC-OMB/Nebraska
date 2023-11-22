@@ -1,6 +1,6 @@
 from tkinter.ttk import Notebook
 
-from gui.widgets.widget_factory import WidgetFactory
+from frontend.components.widgets.widget_factory import WidgetFactory
 
 
 class MainNotebook(Notebook):
@@ -8,9 +8,8 @@ class MainNotebook(Notebook):
 
     def __init__(self, master):
         super().__init__(master)
-        # Set up data
-        self.db = master.db
-        self.data_adapter = master.data_adapter
+        # Set up api
+        self.api = master.api
         # Add widgets
         self.add_widgets()
 

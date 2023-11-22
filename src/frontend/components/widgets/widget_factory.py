@@ -1,6 +1,6 @@
 from enum import Enum
 
-from gui.widgets.frames import *
+from frontend.components.widgets.frames import *
 
 
 class WidgetFactory:

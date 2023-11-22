@@ -1,9 +1,11 @@
 import tkinter as tk
 from tkinter import ttk, filedialog, messagebox
-from data.data_loader import DataLoader
-from data.data_exporter import DataExporter
-from database.db_manager import DatabaseManager
-from src.gui.windows.data_visualization import DataVisualization
+from api.data_loader import DataLoader
+from api.data_exporter import DataExporter
+
+from api import load_csv
+from legacy.database.db_manager import DatabaseManager
+from legacy.windows.data_visualization import DataVisualization
 import os
 
 
@@ -64,7 +66,7 @@ class MainWindow:
                 db_name = os.path.basename(filepath).split('.')[0] + '_temp_db.sqlite'
                 db_manager = DatabaseManager(db_name)
 
-                df = data_loader.load_csv(filepath)
+                df = load_csv(filepath)
                 db_manager.save_data(df)
 
                 self.data_loaders[filepath] = data_loader

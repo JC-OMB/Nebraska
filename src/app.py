@@ -1,15 +1,17 @@
-from data import DataAdapter, Database
-from gui import GUI
+from api import API
+from database import Database
+from frontend import Frontend
 
 
 class App:
     def __init__(self):
-        # Backend
+        # Database
         self.db = Database()
-        self.data_adapter = DataAdapter(self.db)
-        self.db.data_adapter = self.data_adapter
+        # API
+        self.api = API()
         # Frontend
-        self.gui = GUI(self.db, self.data_adapter)
+        self.frontend = Frontend(self.api)
 
     def run(self):
-        self.gui.render()
+        self.db.run()
+        self.frontend.render()

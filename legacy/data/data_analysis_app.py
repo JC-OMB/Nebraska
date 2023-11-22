@@ -36,7 +36,7 @@ def procesar_datos():
         return
     try:
         df.fillna(0, inplace=True)
-        with sqlite3.connect('datos_temporales.db') as conn:
+        with sqlite3.connect('datos_temporales.csv') as conn:
             df.to_sql('datos_procesados', conn, if_exists='replace', index=False)
         messagebox.showinfo("Procesar Datos", "Los datos han sido procesados y almacenados.")
     except Exception as e:
@@ -51,7 +51,7 @@ def visualizar_datos():
             messagebox.showwarning("Visualización", "Por favor, seleccione una columna para visualizar.")
             return
 
-        conn = sqlite3.connect('datos_temporales.db')
+        conn = sqlite3.connect('datos_temporales.csv')
         df = pd.read_sql_query("SELECT * FROM datos_procesados", conn)
         conn.close()
 
@@ -88,7 +88,7 @@ def visualizar_datos():
 # Función para exportar datos
 def exportar_datos():
     try:
-        conn = sqlite3.connect('datos_temporales.db')
+        conn = sqlite3.connect('datos_temporales.csv')
         df = pd.read_sql_query("SELECT * FROM datos_procesados", conn)
         conn.close()
 
