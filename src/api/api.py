@@ -1,7 +1,9 @@
-from api.controllers import CSVController, DataController
+from api.controllers.dataset_controllers.dataset_controller import DatasetController
+from api.controllers.file_controllers.csv_controller import CSVController
+from api.controllers.schema_controllers.schema_controller import SchemaController
 
 
 class API:
-    def __init__(self):
-        self.csv = CSVController()
-        self.data = DataController()
+    csv = CSVController
+    data = DatasetController
+    schema = SchemaController

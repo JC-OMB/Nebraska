@@ -1,19 +1,34 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from api.models import Dataset, Metric, Sensor, Site
+from api.models.dataset import Dataset
+from api.models.metric import Metric
+from api.models.sensor import Sensor
+from api.models.site import Site
 
 
 class Database:
-    def __init__(self):
-        self.models = [Site, Sensor, Metric, Dataset]
-        self.url = 'sqlite:///src/database/data/database.db'
-        self.engine = create_engine(self.url, echo=True)
-        self.session = sessionmaker(bind=self.engine)()
+    engine = None
+    models = None
+    session = None
+    url = None
 
-    def create_tables(self):
-        for model in self.models:
-            model.metadata.create_all(self.engine)
+    @classmethod
+    def setup(cls):
+        # Set up the database
+        cls.models = [Dataset, Metric, Sensor, Site]
+        cls.url = 'sqlite:///src/database/data/database.db'
+        cls.engine = create_engine(cls.url)
+        cls.session = sessionmaker(bind=cls.engine)
+        # Create tables
+        cls.create_tables()
 
-    def run(self):
-        self.create_tables()
+    @classmethod
+    def create_tables(cls):
+        for model in cls.models:
+            model.metadata.create_all(cls.engine)
+
+    @classmethod
+    def run(cls):
+        # Setup
+        cls.setup()

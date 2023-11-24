@@ -1,10 +1,12 @@
 from tkinter.ttk import Treeview
 
+from api.api import API
+
 
 class DataFrameWidget(Treeview):
     def __init__(self, master):
         super().__init__(master)
-        self.api = master.api
+        # Get API
         self.df = None
 
     def load(self, name):
@@ -13,13 +15,11 @@ class DataFrameWidget(Treeview):
             self.setup()
 
     def setup(self):
-        data = self.api.data.get(self.df)
+        data = API.data.get_data(self.df)
         self['columns'] = list(data.columns)
         self['show'] = 'headings'
         for header in self['columns']:
             self.heading(header, text=header)
         for index, row in data.iterrows():
             self.insert('', 'end', values=list(row))
-
-    def render(self):
         self.pack(fill='both', expand=1)
