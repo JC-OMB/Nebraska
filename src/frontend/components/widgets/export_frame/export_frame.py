@@ -1,4 +1,6 @@
-from tkinter import Frame
+from tkinter import Frame, Button, messagebox
+
+from api.api import API
 
 
 class ExportFrame(Frame):
@@ -18,14 +20,23 @@ class ExportFrame(Frame):
             self.initialized = True
             # Add widgets
             self.add_widgets()
-            # Initial Render
+            # Render
             self.render()
 
     def add_widgets(self):
-        # TODO - Add widgets for exporting data
-        # ...
-        # API.data.export()
-        pass
+        # download button
+        self.export_button = Button(self, text="Export Merged Dataset", command=self.export)
 
     def render(self):
-        pass
+        # download button
+        self.export_button.pack(side="top")
+        self.pack(fill="both", expand=True)
+
+    def export(self):
+        try:
+            print("Exporting...")
+            API.data.export()
+            messagebox.showinfo("Success", "Successfully Exported Merged Dataset(s) to Desktop")
+            print("Done")
+        except Exception as e:
+            messagebox.showerror("Error", f'Error in Loading Dataset(s): {str(e)}')
