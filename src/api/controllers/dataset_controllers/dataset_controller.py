@@ -21,11 +21,13 @@ class DatasetController:
 
     @classmethod
     def merge(cls):
-        dataset = None
+        df1 = None
         for path in cls.datasets.keys():
-            df = cls.get(path)
-            if dataset is None:
-                dataset = df
+            df2 = cls.get(path)
+            if df1 is None:
+                df1 = df2
             else:
-                dataset = merge(dataset, df, on='startDateTime')
-        cls.datasets["universal"] = dataset
+                df1 = merge(df1, df2, on='startDateTime')
+        cls.datasets["universal"] = df1
+
+    # TODO: Implement self.export

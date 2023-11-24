@@ -51,7 +51,7 @@ class DatasetFrame(Frame):
         analysis_frame: AnalysisFrame = self.master.winfo_children()[2]
         analysis_frame.table.setup()
         # Navigate to analysis frame
-        self.master.select(2)
+        self.master.select(analysis_frame)
 
     def handle_load_button(self):
         if len(API.csv.selected) > 0:

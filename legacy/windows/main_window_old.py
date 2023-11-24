@@ -1,12 +1,13 @@
+import os
 import tkinter as tk
 from tkinter import ttk, filedialog, messagebox
-from api.data_loader import DataLoader
+
 from api.data_exporter import DataExporter
+from api.data_loader import DataLoader
 
 from api import load_csv
 from legacy.database.db_manager import DatabaseManager
 from legacy.windows.data_visualization import DataVisualization
-import os
 
 
 class MainWindow:
@@ -84,7 +85,7 @@ class MainWindow:
         selected_file = self.dataset_selection.get()
         if selected_file:
             self.set_current_dataset(selected_file)
-            self.column_selection['values'] = self.data_loaders[selected_file].df.columns.tolist()
+            self.column_selection['values'] = self.data_loaders[selected_file].dataset.columns.tolist()
 
     def set_current_dataset(self, dataset_name):
         self.current_dataset = dataset_name

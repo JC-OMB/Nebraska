@@ -13,7 +13,9 @@ class DataFrameWidget(Treeview):
 
     def setup(self):
         try:
+            # Load Dataset
             self.dataset = API.data.get("universal")
+            # Visualize Dataset as Table
             self['columns'] = list(self.dataset.columns)
             self['show'] = 'headings'
             for header in self['columns']:

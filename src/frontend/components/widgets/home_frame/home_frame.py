@@ -22,6 +22,8 @@ class HomeFrame(Frame):
             self.render()
 
     def add_widgets(self):
+        # TODO - Add widgets for home frame
+        # Título, fotos, enlaces a la documentación, etc.
         pass
 
     def render(self):
