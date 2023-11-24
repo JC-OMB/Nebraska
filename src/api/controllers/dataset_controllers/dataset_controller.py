@@ -31,3 +31,8 @@ class DatasetController:
         cls.datasets["universal"] = df1
 
     # TODO: Implement self.export
+    @classmethod
+    def export(cls):
+        # download universal dataset using pandas
+        dataset = cls.get("universal")
+        dataset.to_csv('/Users/danielbakas/Desktop/merged_dataset.csv', index=False)
