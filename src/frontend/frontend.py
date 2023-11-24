@@ -1,15 +1,26 @@
 from tkinter import Tk
 
-from frontend.components.notebooks import MainNotebook
+from frontend.components.notebooks.main_notebook import MainNotebook
 
 
 class Frontend(Tk):
-    def __init__(self, api):
-        # Initialize the main window
-        super().__init__()
-        # Set up api
-        self.api = api
+    _instance = None
 
+    def __new__(cls):
+        if cls._instance is None:
+            cls._instance = super(Frontend, cls).__new__(cls)
+            cls._instance.initialized = False
+        return cls._instance
+
+    def __init__(self):
+        if not self.initialized:
+            # Initialize
+            super().__init__()
+            self.initialized = True
+            # Setup
+            self.setup()
+
+    def setup(self):
         # Set up the main window
         self.title("Data Analysis Application")
         self.geometry("800x600")

@@ -8,7 +8,7 @@ from app import App
 
 
 def main():
-    App().run()
+    App.run()
 
 
 if __name__ == "__main__":
