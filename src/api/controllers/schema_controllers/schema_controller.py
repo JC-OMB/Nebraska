@@ -11,6 +11,14 @@ class SchemaController:
             cls.add(path)
 
     @classmethod
+    def get_names(cls):
+        return [path.stem for path in cls.sources]
+
+    @classmethod
+    def get_all(cls):
+        return cls.sources
+
+    @classmethod
     def remove(cls, path):
         cls.sources.discard(path)
 

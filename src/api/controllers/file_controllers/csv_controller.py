@@ -1,5 +1,4 @@
 class CSVController:
-    _instance = None
     sources = set()
     selected = set()
 
@@ -23,8 +22,3 @@ class CSVController:
             cls.selected.add(path)
         else:
             cls.selected.discard(path)
-
-    @classmethod
-    def select_some(cls, paths, value):
-        for path in paths:
-            cls.select_one(path, value)

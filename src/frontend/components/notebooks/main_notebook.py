@@ -17,16 +17,16 @@ class MainNotebook(Notebook):
             # Initialize
             super().__init__(master)
             self.initialized = True
-            # Setup
-            self.setup()
-
-    def setup(self):
-        # Add widgets
-        self.add_widgets()
-        # Pack
-        self.pack(expand=True, fill='both')
+            # Add widgets
+            self.add_widgets()
+            # render
+            self.render()
 
     def add_widgets(self):
         widgets = WidgetFactory.get(MainNotebook)
         for widget in widgets:
             self.add(widget(self), text=widget.label)
+
+    def render(self):
+        # Pack
+        self.pack(expand=True, fill='both')

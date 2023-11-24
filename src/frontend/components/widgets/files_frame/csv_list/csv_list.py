@@ -1,5 +1,5 @@
 from pathlib import Path
-from tkinter import Frame, filedialog
+from tkinter import Frame, filedialog, Button
 
 from api.api import API
 from frontend.components.widgets.files_frame.csv_list.csv_row import CSVRow
@@ -10,10 +10,21 @@ class CSV_List(Frame):
         # Initialize
         super().__init__(master)
         self.initialized = True
+        # Create widgets
+        self.add_widgets()
+        # Render
+        self.render()
+
+    def add_widgets(self):
+        self.add_button = Button(self, text="Add Dataset(s)", command=self.add_rows)
+
+    def render(self):
+        self.add_button.pack(anchor='n')
+        self.pack(anchor='center', fill='x')
 
     def add_row(self, path):
-        API.csv.add(path)
-        CSVRow(self, path)
+        if path not in API.csv.sources:
+            CSVRow(self, path)
 
     def add_rows(self):
         # Get CSV paths
@@ -23,14 +34,3 @@ class CSV_List(Frame):
         # Add CSV paths to database
         for path in paths:
             self.add_row(path)
-        # Render rows
-        self.render()
-
-    def render(self):
-        # Self
-        self.pack_forget()
-        if API.csv.sources:
-            self.pack(anchor='n', fill='x')
-        # Master
-        self.master.render_add_button()
-        self.master.render_load_button()

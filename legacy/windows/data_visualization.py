@@ -10,7 +10,7 @@ class DataVisualization:
 
     def visualize_data(self, data, column):
         if data is None or column not in data.columns:
-            print("Error: El FilesFrame es None o la columna no existe.")
+            print("Error: El DatasetFrame es None o la columna no existe.")
             return
 
         graph_window = tk.Toplevel(self.root)

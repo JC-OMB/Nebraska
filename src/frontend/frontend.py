@@ -19,13 +19,13 @@ class Frontend(Tk):
             self.initialized = True
             # Setup
             self.setup()
+            # Add widgets
+            self.add_widgets()
 
     def setup(self):
         # Set up the main window
-        self.title("Data ANALysis Tool")
+        self.title("Data Analysis Tool")
         self.geometry("800x600")
-        # Add widgets
-        self.add_widgets()
 
     def add_widgets(self):
         MainNotebook(self)

@@ -1,5 +1,7 @@
 from tkinter import Frame, Button, Label
 
+from api.api import API
+
 
 class SchemaRow(Frame):
     def __init__(self, master, path):
@@ -12,16 +14,15 @@ class SchemaRow(Frame):
         self.render()
 
     def add_widgets(self):
-        # Checkbox
-        row_frame = Frame(self)
+        self.label = Label(self, text=self.path.name)
+        # Remove button
+        self.remove_btn = Button(self, text="Remove", fg="red", command=self.destroy)
 
-        label = Label(row_frame, text=self.path.name)
-        label.pack(side='left')
-
-        remove_btn = Button(row_frame, text="Remove", fg="red", command=lambda p=self.path: self.remove_row(p))
-        remove_btn.pack(side='right')
-
-        row_frame.pack(anchor='n', fill='x')
+    def destroy(self):
+        API.schema.remove(self.path)
+        super().destroy()
 
     def render(self):
+        self.label.pack(side='left')
+        self.remove_btn.pack(side='right')
         self.pack(anchor='n', fill='x')

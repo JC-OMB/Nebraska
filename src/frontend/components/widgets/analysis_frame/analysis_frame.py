@@ -1,8 +1,7 @@
-from tkinter import Frame
-from tkinter.ttk import Combobox
+from tkinter import Frame, Button
 
-from api.api import API
 from frontend.components.widgets.analysis_frame.dataframe_widget import DataFrameWidget
+from frontend.components.widgets.visualization_frame.visualization_frame import VisualizationFrame
 
 
 class AnalysisFrame(Frame):
@@ -21,24 +20,20 @@ class AnalysisFrame(Frame):
             super().__init__(master)
             self.initialized = True
             # Create widgets
-            self.setup()
-
-    def setup(self):
-        # Create widgets
-        self.add_widgets()
-        # Pack
-        self.data_selector.pack(fill='x')
+            self.add_widgets()
+            # Render
+            self.render()
 
     def add_widgets(self):
-        self.data_selector = Combobox(self, state="readonly")
-        self.data_selector.bind("<<ComboboxSelected>>", self.select)
-        self.data_selector.set("Select Schema")
         self.table = DataFrameWidget(self)
+        self.merge_button = Button(self, text="Visualize", command=self.navigate)
 
-    def select(self, event=None):
-        selected_name = self.data_selector.get()
-        self.table.load(selected_name)
+    def navigate(self):
+        visualization_frame: VisualizationFrame = self.master.winfo_children()[3]
+        visualization_frame.setup()
+        # Navigate to analysis frame
+        self.master.select(3)
 
-    def update_combobox(self):
-        values = API.data.get_names()
-        self.data_selector['values'] = values
+    def render(self):
+        self.merge_button.pack(anchor='n')
+        self.pack(expand=True, fill='both')

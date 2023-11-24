@@ -1,28 +1,38 @@
+import matplotlib
+
+matplotlib.use('TkAgg')
 from tkinter import Frame
+from matplotlib import pyplot as plt
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+from api.api import API
 
 
 class VisualizationFrame(Frame):
-    _instance = None
     label = "Visualization"
 
-    def __new__(cls, master):
-        if cls._instance is None:
-            cls._instance = super(VisualizationFrame, cls).__new__(cls)
-            cls._instance.initialized = False
-        return cls._instance
-
     def __init__(self, master):
-        if not self.initialized:
-            # Initialize
-            super().__init__(master)
-            self.initialized = True
-            # Add widgets
-            self.add_widgets()
-            # Initial Render
-            self.render()
+        super().__init__(master)
+        self.render()
 
-    def add_widgets(self):
-        pass
+    def setup(self):
+        try:
+            df = API.data.get("universal")
+            self.fig, self.ax = plt.subplots()
+            canvas = FigureCanvasTkAgg(self.fig, master=self)
+            widget = canvas.get_tk_widget()
+            x = 'startDateTime'
+            y = 'tempSingleMean'
+            self.ax.plot(df[x], df[y])
+            self.ax.set_xlabel(x)
+            self.ax.set_ylabel(y)
+            widget.pack(fill="both", expand=True)
+        except Exception as e:
+            print(f'Error Visualizing Dataset: {e}')
 
     def render(self):
-        pass
+        self.pack(expand=True, fill='both')
+
+# Usage example
+# root = tk.Tk()
+# visualization_frame = VisualizationFrame(root)
+# root.mainloop()

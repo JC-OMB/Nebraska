@@ -8,7 +8,7 @@ import pandas as pd
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
 # Variables globales
-df = None  # FilesFrame para almacenar los datos cargados
+df = None  # DatasetFrame para almacenar los datos cargados
 
 
 # Función para cargar CSV

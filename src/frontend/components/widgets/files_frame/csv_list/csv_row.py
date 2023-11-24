@@ -1,5 +1,4 @@
 from tkinter import Frame, BooleanVar, Checkbutton, Button
-from tkinter.ttk import Combobox
 
 from api.api import API
 
@@ -9,38 +8,30 @@ class CSVRow(Frame):
         super().__init__(master)
         # Setup
         self.path = path
+        API.csv.add(self.path)
         # Add widgets
         self.add_widgets()
         # Render
         self.render()
 
     def add_widgets(self):
-        # Checkbox
-        label = self.path.stem
-        selection = BooleanVar(value=self.path in API.csv.selected)
-        command = lambda: self.select_row(self.path, selection)
-        checkbox = Checkbutton(self, text=label, var=selection, command=command)
-        checkbox.pack(side='left')
-        # Schema Dropdown
-        schema_options = [schema.name for schema in API.schema.sources]
-        schema_dropdown = Combobox(self, values=schema_options, state="readonly")
-        schema_dropdown.set("Select Schema")
-
-        remove_btn = Button(self, text="Remove", fg="red", command=lambda p=self.path: self.remove_row(p))
-
-        remove_btn.pack(side='right')
-        schema_dropdown.pack(side='right')
+        text = self.path.name
+        var = BooleanVar(value=self.path in API.csv.selected)
+        command = lambda: self.select_row(self.path, var)
+        self.checkbox = Checkbutton(self, text=text, var=var, command=command)
+        # Remove Button
+        self.remove_btn = Button(self, text="Remove", fg="red", command=self.destroy)
 
     def render(self):
+        self.checkbox.pack(side='left')
+        self.remove_btn.pack(side='right')
         self.pack(anchor='n', fill='x')
-        self.master.master.render_load_button()
 
-    def remove_row(self, path):
-        API.csv.remove(path)
-        self.destroy()
-        self.master.render()
+    def destroy(self):
+        API.csv.remove(self.path)
+        super().destroy()
 
-    def select_row(self, path, selection):
-        is_selected = selection.get()
+    def select_row(self, path, var):
+        is_selected = var.get()
         API.csv.select_one(path, is_selected)
-        self.render()
+        self.master.master.handle_load_button()
